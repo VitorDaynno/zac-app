@@ -1,0 +1,4 @@
+*.env
+.expo
+local.properties
+node_modules
