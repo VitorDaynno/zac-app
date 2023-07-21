@@ -11,6 +11,7 @@ import {
 import DatetimeInput from '../components/DatetimeInput';
 import FloatButton from '../components/FloatButton';
 import DaySelector from '../components/DaySelector';
+import ShowHide from '../components/ShowHide';
 import Task from '../components/Task';
 
 import { getStartOfDay, getEndOfDay } from '../helpers/date';
@@ -23,6 +24,9 @@ function Home({ navigation }) {
   const [startDate, setStartDate] = useState(new Date());
   const [searchDate, setSearchDate] = useState(new Date());
   const [tasks, setTasks] = useState([]);
+  const [filteredTasks, setFilteredTasks] = useState([]);
+
+  const [showOnlyPending, setShowOnlyPending] = useState(false);
 
   const { openModal } = React.useContext(ModalContext);
 
@@ -37,6 +41,9 @@ function Home({ navigation }) {
       const { tasks } = data;
 
       setTasks(tasks);
+      setFilteredTasks(
+        tasks.filter((task)=> !task.isConclude && !task.isFailed)
+      );
     } catch (error) {
       openModal('Erro ao buscar as tarefas');
     }
@@ -61,32 +68,44 @@ function Home({ navigation }) {
 
   return (
     <SafeAreaView>
-      <View style={styles.body}>
-        <View style={styles.dateSelector}>
-          <DatetimeInput
-            mode='date'
-            value={startDate}
-            onChangeValue={(date) => setStartDate(date)}
-          />
+      <View style={styles.content}>
+        <View style={styles.header}>
+          <View style={styles.headerItem}/>
+          <View style={styles.dateSelector}>
+            <DatetimeInput
+              mode='date'
+              value={startDate}
+              onChangeValue={(date) => setStartDate(date)}
+            />
+          </View>
+          <View style={styles.headerItem}>
+            <ShowHide
+              isHide={showOnlyPending}
+              onPress={() => setShowOnlyPending(!showOnlyPending)}
+            />
+          </View>
         </View>
-        {/* <View style={styles.line}/> */}
         <DaySelector
           firstDay={startDate}
           change={(date) => setSearchDate(date)}
         />
         <ScrollView>
-          {tasks.map((task)=>
-            (<View key={task.id}>
-              <Task
-                data={task}
-                callbackFail={getTasks}
-                callbackConclude={getTasks}
-              />
-            </View>)
-          )}
+          {
+            (showOnlyPending ? filteredTasks : tasks).map((task)=>
+              (
+                <View key={task.id}>
+                  <Task
+                    data={task}
+                    callbackFail={getTasks}
+                    callbackConclude={getTasks}
+                  />
+                </View>
+              )
+            )
+          }
         </ScrollView>
         {
-          !tasks.length && (
+          !(showOnlyPending ? filteredTasks : tasks).length && (
             <>
               <Image
                 style={styles.noDataImage}
@@ -107,7 +126,7 @@ function Home({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  body: {
+  content: {
     backgroundColor: 'white',
     height: '95%',
     padding: 10,
@@ -131,6 +150,14 @@ const styles = StyleSheet.create({
     maxWidth: '90%',
     maxHeight: '50%',
     alignSelf: 'center',
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  headerItem: {
+    minWidth: '15%',
+    maxWidth: '15%',
   }
 });
 
