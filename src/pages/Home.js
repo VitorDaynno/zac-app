@@ -40,9 +40,13 @@ function Home({ navigation }) {
       const { data } = response;
       const { tasks } = data;
 
-      setTasks(tasks);
+      const sortedTasks = tasks.sort(
+        (a, b) => b.startTime > a.startTime ? -1 : 0
+      );
+
+      setTasks(sortedTasks);
       setFilteredTasks(
-        tasks.filter((task)=> !task.isConclude && !task.isFailed)
+        sortedTasks.filter((task)=> !task.isConclude && !task.isFailed)
       );
     } catch (error) {
       openModal('Erro ao buscar as tarefas');
