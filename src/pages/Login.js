@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Image,
   SafeAreaView,
+  Text
 } from 'react-native';
 
 import { ModalContext } from '../contexts/ModalContextProvider';
@@ -54,6 +55,7 @@ function Login({ navigation }) {
           />
           <Button label={'Entrar'} color={'#222222'} onPress={onLogin}/>
         </View>
+        <Text style={styles.version}>v0.0.9</Text>
       </View>
     </SafeAreaView>
   );
@@ -81,5 +83,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  version: {
+    position: 'absolute',
+    fontFamily: 'monospace',
+    color: '#222222',
+    bottom: 55,
+  }
 });
 export default Login;
