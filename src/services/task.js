@@ -16,7 +16,7 @@ export const updateTask = async (id, task) => {
 
 export const getTasks = async ({ startDate, endDate }) => {
   const response = await axios.get(
-    `${BASE_URL}/tasks?start_date=${startDate}&end_date=${endDate}`
+    `${BASE_URL}/tasks?start_date=${startDate.toISOString()}&end_date=${endDate.toISOString()}`
   );
 
   return response;

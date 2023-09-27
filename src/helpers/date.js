@@ -4,6 +4,7 @@ import {
   formatRelative,
   startOfDay,
   endOfDay,
+  parseISO
 } from 'date-fns';
 
 import { ptBR } from 'date-fns/locale';
@@ -12,8 +13,8 @@ export const ToString = (date, mask) => {
   return format(date, mask);
 };
 
-export const toDate = (date) => {
-  return new Date(date);
+export const toDate = (date, isISO=true) => {
+  return isISO ? parseISO(date): new Date(date);
 };
 
 export const getDuration = (firstDate, secondDate) => {

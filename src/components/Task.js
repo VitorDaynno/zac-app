@@ -62,11 +62,11 @@ function Task({data, callbackFail, callbackConclude }) {
             {DateHelper.ToString(new Date(data.startTime), 'HH:mm')} - {''}
             {DateHelper.ToString(new Date(data.endTime), 'HH:mm')}
           </Text>
-          {
-            data.note && (
-              <Text style={[styles.text, styles.note]}>{data.note}</Text>
-            )
-          }
+          <Text style={[styles.text, styles.note]}>
+            {
+              data.note ? data.note : '-'
+            }
+          </Text>
         </View>
         {
           (!data.isConclude && !data.isFailed) && (

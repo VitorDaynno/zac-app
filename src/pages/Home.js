@@ -114,7 +114,7 @@ function Home({ navigation }) {
               <Image
                 style={styles.noDataImage}
                 // eslint-disable-next-line no-undef
-                source={require('../../assets/nodata17.png')}
+                source={require('../../assets/nodata.png')}
                 resizeMode="contain"
               />
               <Text style={styles.noData}>
@@ -132,7 +132,7 @@ function Home({ navigation }) {
 const styles = StyleSheet.create({
   content: {
     backgroundColor: 'white',
-    height: '95%',
+    height: '100%',
     padding: 10,
     paddingTop: 25,
   },
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     fontFamily: 'monospace',
     fontSize: 13,
     marginTop: 5,
-    marginBottom: 40,
+    marginBottom: '50%',
     textAlign: 'center',
     fontStyle: 'italic',
     color: '#898989',

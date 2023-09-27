@@ -29,8 +29,8 @@ function Task({ route, navigation }) {
       const task = {
         name,
         date: DateHelper.getStartOfDay(date),
-        startTime: DateHelper.toDate(`${selectedDay} ${selectedStartTime}`),
-        endTime: DateHelper.toDate(`${selectedDay} ${selectedEndTime}`),
+        startTime: DateHelper.toDate(`${selectedDay}T${selectedStartTime}`),
+        endTime: DateHelper.toDate(`${selectedDay}T${selectedEndTime}`),
         note,
       };
 
@@ -69,9 +69,9 @@ function Task({ route, navigation }) {
 
       setId(id);
       setName(name);
-      setDate(DateHelper.toDate(date));
-      setStartTime(DateHelper.toDate(startTime));
-      setEndTime(DateHelper.toDate(endTime));
+      setDate(DateHelper.toDate(date, false));
+      setStartTime(DateHelper.toDate(startTime, false));
+      setEndTime(DateHelper.toDate(endTime, false));
       setNote(note);
     }
   }, []);
