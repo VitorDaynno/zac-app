@@ -1,59 +1,60 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, SafeAreaView, ScrollView } from 'react-native';
+import { StyleSheet, SafeAreaView, ScrollView} from 'react-native';
 
-import { ModalContext } from '../contexts/ModalContextProvider';
-import DatetimeInput from '../components/DatetimeInput';
 import Button from '../components/Button';
+import DatetimeInput from '../components/DatetimeInput';
+import DaysOfWeekSelector from '../components/DaysOfWeekSelector';
 import Input from '../components/Input';
+import Label from '../components/Label';
+import { ModalContext } from '../contexts/ModalContextProvider';
 import * as DateHelper from '../helpers/date';
-import { createTask, updateTask } from '../services/task';
+import { createRoutine } from '../services/routine';
 
 
-function Task({ route, navigation }) {
+function Routine({ route, navigation }) {
   const [id, setId] = useState(null);
   const [name, setName] = useState('');
-  const [date, setDate] = useState('');
+  const [days, setDays] = useState([]);
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
   const [note, setNote] = useState('');
-
   const [buttonIsDisabled, setButtonIsDisabled] = useState(true);
 
   const { openModal } = React.useContext(ModalContext);
 
-  const saveTask = async () => {
+  useEffect(()=> {
+    validateValues();
+  },[name, days, startTime, endTime]);
+
+
+  const saveRoutine = async () => {
     try {
-      const selectedDay = DateHelper.ToString(date, 'yyyy-MM-dd');
       const selectedStartTime = DateHelper.ToString(startTime, 'HH:mm');
       const selectedEndTime = DateHelper.ToString(endTime, 'HH:mm');
 
-      const task = {
+      const routine = {
         name,
-        date: DateHelper.getStartOfDay(date),
-        startTime: DateHelper.toDate(`${selectedDay}T${selectedStartTime}`),
-        endTime: DateHelper.toDate(`${selectedDay}T${selectedEndTime}`),
+        days,
+        startTime: selectedStartTime,
+        endTime: selectedEndTime,
         note,
       };
 
-      if (id) {
-        await updateTask(id, task);
-      } else {
-        await createTask(task);
-      }
+      await createRoutine(routine);
 
       navigation.navigate('Home');
     } catch (error) {
-      openModal('Erro ao salvar a tarefa!');
+      openModal('Erro ao salvar a rotina!');
     }
   };
 
   const validateValues = () => {
-    if(!name || !date || !startTime || !endTime) {
+    if(!name || !startTime || !endTime) {
       setButtonIsDisabled(true);
       return;
     }
 
-    if(startTime > endTime) {
+    if(!days.length) {
       setButtonIsDisabled(true);
       return;
     }
@@ -61,41 +62,17 @@ function Task({ route, navigation }) {
     setButtonIsDisabled(false);
   };
 
-  useEffect(() => {
-    const { params } = route;
-    const { task } = params || {};
-
-    if (task) {
-      const { id, name, date, startTime, endTime, note } = task;
-
-      setId(id);
-      setName(name);
-      setDate(DateHelper.toDate(date, false));
-      setStartTime(DateHelper.toDate(startTime, false));
-      setEndTime(DateHelper.toDate(endTime, false));
-      setNote(note);
-    }
-  }, []);
-
-  useEffect(()=>{
-    validateValues();
-  },[name, date, startTime, endTime]);
-
   return (
     <SafeAreaView>
       <ScrollView style={styles.body}>
         <Input
           label={'Nome'}
-          placeholder={'Digite o nome da tarefa'}
+          placeholder={'Digite o nome da rotina'}
           value={name}
           onChange={(name) => setName(name)}
         />
-        <DatetimeInput
-          mode='date'
-          label={'Data'}
-          value={date}
-          onChangeValue={(date) => setDate(date)}
-        />
+        <Label value={'Dias'}/>
+        <DaysOfWeekSelector change={(days) => setDays(days)}/>
         <DatetimeInput
           mode='time'
           label={'Hora de inicio'}
@@ -108,15 +85,17 @@ function Task({ route, navigation }) {
           value={endTime}
           onChangeValue={(endTime) => setEndTime(endTime)}
         />
+        
         <Input
           label={'Observação'}
           value={note}
           onChange={(note) => setNote(note)}
         />
+     
         <Button
           color='#222222'
           label={!id ? 'Criar': 'Atualizar'}
-          onPress={saveTask}
+          onPress={saveRoutine}
           disabled={buttonIsDisabled}
         />
       </ScrollView>
@@ -130,8 +109,8 @@ const styles = StyleSheet.create({
     height: '100%',
     paddingTop: 50,
     paddingHorizontal: 30
-  }
+  },
 });
 
 
-export default Task;
+export default Routine;

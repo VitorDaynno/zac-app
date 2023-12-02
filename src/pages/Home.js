@@ -30,6 +30,18 @@ function Home({ navigation }) {
 
   const { openModal } = React.useContext(ModalContext);
 
+  const options = [{
+    key: 'task',
+    name: 'Nova tarefa',
+    icon: 'check',
+    action: () => newTask()
+  },{
+    key: 'routine',
+    name: 'Nova rotina',
+    icon: 'tasklist',
+    action: () => newRoutine()
+  }];
+
   const getTasks = async () => {
     try {
       const startDate = getStartOfDay(searchDate);
@@ -57,6 +69,9 @@ function Home({ navigation }) {
     navigation.navigate('Task');
   };
 
+  const newRoutine = async () => {
+    navigation.navigate('Routine');
+  };
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -124,7 +139,7 @@ function Home({ navigation }) {
           )
         }
       </View>
-      <FloatButton iconName={'plus'} iconSize={30} onPress={newTask}/>
+      <FloatButton iconSize={30} options={options}/>
     </SafeAreaView>
   );
 }
