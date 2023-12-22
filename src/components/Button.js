@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     minWidth: '100%',
     height: 43,
+    flexDirection: 'row',
   },
   disabledButton: {
     backgroundColor: '#bababa'
