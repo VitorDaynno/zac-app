@@ -6,7 +6,11 @@ import DatetimeInput from '../components/DatetimeInput';
 import Button from '../components/Button';
 import Input from '../components/Input';
 import * as DateHelper from '../helpers/date';
-import { createTask, updateTask } from '../services/task';
+import {
+  createTask,
+  updateTask,
+  deleteTask as deleteTaskService
+} from '../services/task';
 
 function Task({ route, navigation }) {
   const [id, setId] = useState(null);
@@ -58,6 +62,16 @@ function Task({ route, navigation }) {
     }
 
     setButtonIsDisabled(false);
+  };
+
+  const deleteTask = async () => {
+    try {
+      await deleteTaskService(id);
+
+      navigation.navigate('Home');
+    } catch (error) {
+      openModal('Erro ao excluir a tarefa!');
+    }
   };
 
   useEffect(() => {
@@ -118,6 +132,15 @@ function Task({ route, navigation }) {
           onPress={saveTask}
           disabled={buttonIsDisabled}
         />
+        {
+          id && (
+            <Button
+              color='red'
+              onPress={deleteTask}
+              label={'Excluir'}
+            />
+          )
+        }
       </ScrollView>
     </SafeAreaView>
   );

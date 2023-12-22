@@ -33,3 +33,9 @@ export const concludeTask = async (id) => {
 
   return response;
 };
+
+export const deleteTask = async (id) => {
+  const response = await axios.delete(`${BASE_URL}/tasks/${id}`);
+
+  return response;
+};
