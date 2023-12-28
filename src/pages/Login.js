@@ -55,7 +55,7 @@ function Login({ navigation }) {
           />
           <Button label={'Entrar'} color={'#222222'} onPress={onLogin}/>
         </View>
-        <Text style={styles.version}>v0.0.9</Text>
+        <Text style={styles.version}>v1.0.0</Text>
       </View>
     </SafeAreaView>
   );
