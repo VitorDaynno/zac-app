@@ -7,7 +7,6 @@ import DaysOfWeekSelector from '../components/DaysOfWeekSelector';
 import Input from '../components/Input';
 import Label from '../components/Label';
 import { ModalContext } from '../contexts/ModalContextProvider';
-import * as DateHelper from '../helpers/date';
 import { createRoutine } from '../services/routine';
 
 
@@ -29,14 +28,11 @@ function Routine({ route, navigation }) {
 
   const saveRoutine = async () => {
     try {
-      const selectedStartTime = DateHelper.ToString(startTime, 'HH:mm');
-      const selectedEndTime = DateHelper.ToString(endTime, 'HH:mm');
-
       const routine = {
         name,
         days,
-        startTime: selectedStartTime,
-        endTime: selectedEndTime,
+        startTime,
+        endTime,
         note,
       };
 
