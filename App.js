@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from './src/pages/Login';
 import Home from './src/pages/Home';
 import Task from './src/pages/Task';
+import Routine from './src/pages/Routine';
 import ModalContextProvider from './src/contexts/ModalContextProvider';
 import UserContextProvider from './src/contexts/UserContextProvider';
 
@@ -20,6 +21,7 @@ export default function App() {
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="Task" component={Task} />
+            <Stack.Screen name="Routine" component={Routine} />
           </Stack.Navigator>
         </UserContextProvider>
       </ModalContextProvider>

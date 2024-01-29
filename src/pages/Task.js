@@ -12,6 +12,7 @@ import {
   deleteTask as deleteTaskService
 } from '../services/task';
 
+
 function Task({ route, navigation }) {
   const [id, setId] = useState(null);
   const [name, setName] = useState('');
