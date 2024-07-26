@@ -53,7 +53,7 @@ function Home({ navigation }) {
       const { tasks } = data;
 
       const sortedTasks = tasks.sort(
-        (a, b) => b.startTime > a.startTime ? -1 : 0
+        (a, b) => new Date(b.startTime).toISOString() > new Date(a.startTime).toISOString() ? -1 : 1
       );
 
       setTasks(sortedTasks);
